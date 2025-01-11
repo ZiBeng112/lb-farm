@@ -52,6 +52,14 @@
             <groupId>com.github.oshi</groupId>
             <artifactId>oshi-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.farm</groupId>
+            <artifactId>farm-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.farm</groupId>
+            <artifactId>farm-system</artifactId>
+        </dependency>
 
         <!-- 系统模块-->
 <!--        <dependency>-->

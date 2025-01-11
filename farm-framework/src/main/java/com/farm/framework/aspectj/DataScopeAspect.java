@@ -2,10 +2,7 @@ package com.farm.framework.aspectj;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.springframework.stereotype.Component;
+
 import com.farm.common.annotation.DataScope;
 import com.farm.common.constant.UserConstants;
 import com.farm.common.core.domain.BaseEntity;
@@ -15,6 +12,11 @@ import com.farm.common.core.domain.model.LoginUser;
 import com.farm.common.core.text.Convert;
 import com.farm.common.utils.SecurityUtils;
 import com.farm.common.utils.StringUtils;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
+
 import com.farm.framework.security.context.PermissionContextHolder;
 
 /**

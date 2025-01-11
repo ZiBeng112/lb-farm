@@ -35,6 +35,7 @@
         <logback.version>1.2.13</logback.version>
         <spring-security.version>5.7.12</spring-security.version>
         <spring-framework.version>5.3.39</spring-framework.version>
+        <mybatis-plus>3.5.4</mybatis-plus>
     </properties>
 
     <!-- 依赖声明 -->
@@ -218,6 +219,12 @@
                 <version>${farm.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus</artifactId>
+                <version>${mybatis-plus}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -228,6 +235,8 @@
         <module>farm-quartz</module>
         <module>farm-generator</module>
         <module>farm-common</module>
+        <module>farm-buyer</module>
+        <module>farm-goods</module>
     </modules>
     <packaging>pom</packaging>
 
