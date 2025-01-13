@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.farm.goods.mapper.FarmEquipmentMapper">
+
+    <resultMap id="BaseResultMap" type="com.farm.goods.domain.FarmEquipment">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="categoryId" column="category_id" jdbcType="BIGINT"/>
+            <result property="pricePerDay" column="price_per_day" jdbcType="DECIMAL"/>
+            <result property="status" column="status" jdbcType="OTHER"/>
+            <result property="location" column="location" jdbcType="VARCHAR"/>
+            <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
+            <result property="ownerId" column="owner_id" jdbcType="BIGINT"/>
+            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+            <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+            <result property="usageRules" column="usage_rules" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,description,
+        category_id,price_per_day,status,
+        location,image_url,owner_id,
+        created_at,updated_at,quantity,
+        usage_rules
+    </sql>
+</mapper>

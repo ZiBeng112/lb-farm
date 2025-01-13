@@ -6,10 +6,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import javax.sql.DataSource;
+
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import org.apache.ibatis.io.VFS;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -114,7 +117,7 @@ public class MyBatisConfig
     }
 
     @Bean
-    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception
+    public MybatisSqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) throws Exception
     {
         String typeAliasesPackage = env.getProperty("mybatis.typeAliasesPackage");
         String mapperLocations = env.getProperty("mybatis.mapperLocations");
@@ -122,11 +125,12 @@ public class MyBatisConfig
         typeAliasesPackage = setTypeAliasesPackage(typeAliasesPackage);
         VFS.addImplClass(SpringBootVFS.class);
 
-        final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+        final MybatisSqlSessionFactoryBean sessionFactory = new MybatisSqlSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setTypeAliasesPackage(typeAliasesPackage);
         sessionFactory.setMapperLocations(resolveMapperLocations(StringUtils.split(mapperLocations, ",")));
         sessionFactory.setConfigLocation(new DefaultResourceLoader().getResource(configLocation));
-        return sessionFactory.getObject();
+        return sessionFactory;
     }
+
 }

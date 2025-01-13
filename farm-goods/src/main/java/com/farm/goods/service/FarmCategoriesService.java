@@ -2,7 +2,9 @@ package com.farm.goods.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.farm.goods.domain.FarmCategories;
-import com.farm.goods.service.impl.Farm;
+
+import java.util.List;
+
 
 /**
 * @author xxplhl
@@ -11,4 +13,7 @@ import com.farm.goods.service.impl.Farm;
 */
 public interface FarmCategoriesService extends IService<FarmCategories> {
 
+    List selectCategoryTree(Long userId);
+
+    FarmCategories qureyCategory(Long id);
 }

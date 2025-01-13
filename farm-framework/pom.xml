@@ -61,6 +61,11 @@
             <artifactId>farm-system</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.farm</groupId>
+            <artifactId>farm-goods</artifactId>
+        </dependency>
+
         <!-- 系统模块-->
 <!--        <dependency>-->
 <!--            <groupId>com.farm</groupId>-->

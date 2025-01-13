@@ -219,9 +219,22 @@
                 <version>${farm.version}</version>
             </dependency>
 
+            <!-- 通用工具-->
+            <dependency>
+                <groupId>com.farm</groupId>
+                <artifactId>farm-goods</artifactId>
+                <version>${farm.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus</artifactId>
+                <version>${mybatis-plus}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus}</version>
             </dependency>
 
