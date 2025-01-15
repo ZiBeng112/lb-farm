@@ -1,8 +1,8 @@
 {
   "name": "farm",
   "version": "3.8.9",
-  "description": "若依管理系统",
-  "author": "若依",
+  "description": "农械租赁管理系统",
+  "author": "农械租赁",
   "license": "MIT",
   "type": "module",
   "scripts": {

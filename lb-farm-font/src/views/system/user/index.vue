@@ -9,7 +9,15 @@
               <el-input v-model="deptName" placeholder="请输入部门名称" clearable prefix-icon="Search" style="margin-bottom: 20px" />
             </div>
             <div class="head-container">
-              <el-tree :data="deptOptions" :props="{ label: 'label', children: 'children' }" :expand-on-click-node="false" :filter-node-method="filterNode" ref="deptTreeRef" node-key="id" highlight-current default-expand-all @node-click="handleNodeClick" />
+              <el-tree
+                  :data="deptOptions"
+                  :props="{ label: 'label', children: 'children' }"
+                  :expand-on-click-node="false"
+                  :filter-node-method="filterNode"
+                  ref="deptTreeRef" node-key="id"
+                  highlight-current
+                  default-expand-all
+                  @node-click="handleNodeClick" />
             </div>
           </el-col>
         </pane>
@@ -112,7 +120,11 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="归属部门" prop="deptId">
-              <el-tree-select v-model="form.deptId" :data="enabledDeptOptions" :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" placeholder="请选择归属部门" check-strictly />
+              <el-tree-select v-model="form.deptId" :data="enabledDeptOptions"
+                              :props="{ value: 'id', label: 'label', children: 'children' }"
+                              value-key="id"
+                              placeholder="请选择归属部门"
+                              check-strictly />
             </el-form-item>
           </el-col>
         </el-row>
