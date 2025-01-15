@@ -1,8 +1,10 @@
 package com.farm.goods.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.farm.goods.domain.CategoryTreeSelect;
 import com.farm.goods.domain.FarmEquipment;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.farm.goods.domain.dto.CategoryListDto;
 import com.farm.goods.domain.dto.EquipmentListDto;
 
 import java.util.List;
@@ -15,4 +17,6 @@ import java.util.List;
 public interface FarmEquipmentService extends IService<FarmEquipment> {
 
     List getList(IPage iPage, EquipmentListDto equipmentListDto);
+
+    List<CategoryTreeSelect> getCategoryTree(CategoryListDto categoryListDto);
 }

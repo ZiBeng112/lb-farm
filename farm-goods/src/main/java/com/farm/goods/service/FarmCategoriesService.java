@@ -2,6 +2,7 @@ package com.farm.goods.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.farm.goods.domain.FarmCategories;
+import com.farm.goods.domain.dto.CategoryListDto;
 
 import java.util.List;
 
@@ -13,7 +14,9 @@ import java.util.List;
 */
 public interface FarmCategoriesService extends IService<FarmCategories> {
 
-    List selectCategoryTree(Long userId);
+    List<FarmCategories> selectCategoryTree(CategoryListDto categoryListDto);
 
     FarmCategories qureyCategory(Long id);
+
+    String selectAllCategoryById(Long id);
 }

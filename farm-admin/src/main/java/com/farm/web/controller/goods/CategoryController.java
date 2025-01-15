@@ -6,6 +6,7 @@ import com.farm.common.core.domain.AjaxResult;
 import com.farm.common.utils.bean.BeanUtils;
 import com.farm.goods.domain.FarmCategories;
 import com.farm.goods.domain.dto.CategoryAddDto;
+import com.farm.goods.domain.dto.CategoryListDto;
 import com.farm.goods.service.FarmCategoriesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,11 +38,11 @@ public class CategoryController extends BaseController {
     @PreAuthorize("@ss.hasPermi('goods:category:list')")
     @GetMapping("list")
     @ApiOperation("获得分类树")
-    public AjaxResult list() {
+    public AjaxResult list(CategoryListDto categoryListDto) {
 
         // 当前登录用户的商品分类信息
-        Long userId = getUserId();
-        List list = categoryService.selectCategoryTree(userId);
+        categoryListDto.setUserId(getUserId());
+        List list = categoryService.selectCategoryTree(categoryListDto);
 
         return AjaxResult.success(list);
     }
@@ -59,41 +60,23 @@ public class CategoryController extends BaseController {
     @PostMapping("add")
     @PreAuthorize("@ss.hasPermi('goods:category:list')")
     @ApiOperation("增加分类")
-    public AjaxResult add(@RequestBody CategoryAddDto categoryAddDto ) {
+    public AjaxResult add(@RequestBody FarmCategories farmCategories ) {
 
         //赋予当前时间
-        categoryAddDto.setCreatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-        categoryAddDto.setUpdatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+        if(farmCategories.getId()!=null){
+            farmCategories.setCreatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+        }
 
-        categoryAddDto.setUserId(this.getUserId());
+        farmCategories.setUpdatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
 
-        FarmCategories farmCategories = new FarmCategories();
-
-        BeanUtils.copyProperties(categoryAddDto,farmCategories);
+        farmCategories.setUserId(this.getUserId());
 
 
         return AjaxResult.success(
-                categoryService.save(farmCategories)
+                categoryService.saveOrUpdate(farmCategories)
         );
     }
-    @PreAuthorize("@ss.hasPermi('goods:category:list')")
-    @PutMapping("update")
-    @ApiOperation("修改分类")
-    public AjaxResult update(@RequestBody CategoryAddDto categoryAddDto ) {
-        //赋予当前时间
-        categoryAddDto.setUpdatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
 
-        categoryAddDto.setUserId(this.getUserId());
-
-        FarmCategories farmCategories = new FarmCategories();
-
-        BeanUtils.copyProperties(categoryAddDto,farmCategories);
-
-
-        return AjaxResult.success(
-                categoryService.updateById(farmCategories)
-        );
-    }
 
     @PreAuthorize("@ss.hasPermi('goods:category:list')")
     @DeleteMapping("delete")

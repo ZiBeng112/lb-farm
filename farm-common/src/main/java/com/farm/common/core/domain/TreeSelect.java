@@ -8,9 +8,11 @@ import com.farm.common.constant.UserConstants;
 import com.farm.common.core.domain.entity.SysDept;
 import com.farm.common.core.domain.entity.SysMenu;
 import com.farm.common.utils.StringUtils;
+import org.apache.poi.ss.formula.functions.T;
 
 /**
  * Treeselect树结构实体类
+ * 服务于前端<el-tree></el-tree>组件
  * 
  * @author farm
  */
@@ -50,6 +52,10 @@ public class TreeSelect implements Serializable
         this.label = menu.getMenuName();
         this.children = menu.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
     }
+
+
+
+
 
     public Long getId()
     {

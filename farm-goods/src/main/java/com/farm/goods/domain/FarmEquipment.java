@@ -43,9 +43,9 @@ public class FarmEquipment implements Serializable {
     private BigDecimal pricePerDay;
 
     /**
-     * 设备状态（可用、已租、维护中）
+     * 设备状态（可用1、已租2、维护中0）
      */
-    private Object status;
+    private Integer status;
 
     /**
      * 设备所在位置
