@@ -28,7 +28,9 @@ onMounted(() => {
   addIframe()
 })
 
-watch((route) => {
+watch(
+    () => route,
+    (route) => {
   addIframe()
 })
 

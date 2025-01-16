@@ -7,3 +7,10 @@ export function treeCategory() {
         method: 'get',
     })
 }
+export function listEquipment(params) {
+    return request({
+        url: '/equipment/list',
+        method: 'get',
+        params: params
+    })
+}
