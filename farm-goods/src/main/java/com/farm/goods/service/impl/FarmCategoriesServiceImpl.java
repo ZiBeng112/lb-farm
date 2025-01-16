@@ -12,6 +12,7 @@ import com.farm.goods.service.FarmCategoriesService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author xxplhl
@@ -44,7 +45,7 @@ public class FarmCategoriesServiceImpl
         // todo 优化 可以其父类也加入进去
         HashSet<FarmCategories> farmCategoriesSet = new HashSet<>();
 
-        if (categoryListDto.getName() != null&&!(categoryListDto.getName().isEmpty())) {
+        if (categoryListDto.getName() != null && !(categoryListDto.getName().isEmpty())) {
             list.forEach(
                     item -> {
                         HashSet<FarmCategories> farmCategories = selectListByParentId(item.getId());
@@ -52,28 +53,35 @@ public class FarmCategoriesServiceImpl
                     }
             );
 
-            // 找到其父类 加入列表
+            // 找到其所有的父类 加入列表
 
             FarmCategories farmCategories = new FarmCategories();
 
-
-            Iterator<FarmCategories> iterator = farmCategoriesSet.iterator();
+            Iterator<FarmCategories> iterator = list.iterator();
             while (iterator.hasNext()) {
-                FarmCategories next = iterator.next();
-                break;
+                farmCategories = iterator.next();
+
+                HashSet<FarmCategories> set = this.selectListByChildId(farmCategories.getId());
+                if (set.size() != 0) {
+                    farmCategoriesSet.addAll(set);
+                }
+
+//                while (farmCategories.getParentId() != 0) {
+//                    farmCategories = this.getById(farmCategories.getParentId());
+//                    farmCategoriesSet.add(farmCategories);
+//                }
             }
 
-
-            while(farmCategories.getParentId() != 0){
-                farmCategories = this.getById(farmCategories.getParentId());
-                farmCategoriesSet.add(farmCategories);
-            }
 
         }
         list.addAll(farmCategoriesSet);
 
+        // 去重
+        farmCategoriesSet.addAll(list);
+        List<FarmCategories> collect = farmCategoriesSet.stream().collect(Collectors.toList());
 
-        return list;
+
+        return collect;
 
 
     }
@@ -96,33 +104,65 @@ public class FarmCategoriesServiceImpl
 
         FarmCategories farmCategory = this.getById(id);
 
-        if(farmCategory.getParentId()!=0){
+        if (farmCategory.getParentId() != 0) {
             sj.add(this.selectAllCategoryById(farmCategory.getParentId()));
             sj.add(farmCategory.getName());
-        }else {
+        } else {
             return farmCategory.getName();
         }
 
         return sj.toString();
     }
 
+    @Override
+    public List<FarmCategories> selectCategoryListById(Long id) {
+
+        //获得其全部子分类
+        HashSet<FarmCategories> farmCategories = selectListByParentId(id);
+        farmCategories.add(this.getById(id));
+
+        return new ArrayList<FarmCategories>(farmCategories);
+    }
+
+    // 作用为 找到该节点下的所有子类
     private HashSet<FarmCategories> selectListByParentId(Long parentId) {
 
         HashSet<FarmCategories> farmCategories = new HashSet<>();
 
         List<FarmCategories> list = this.list(Wrappers.lambdaQuery(FarmCategories.class).eq(FarmCategories::getParentId, parentId));
 
+
         list.forEach(
                 item -> {
+
                     farmCategories.add(item);
-                    this.selectListByParentId(item.getId());
+                    farmCategories.addAll(selectListByParentId(item.getId()));
                 }
         );
+
 
         return farmCategories;
 
 
     }
+
+    // 作用为 找到该节点下的所有父类包括自己
+    private HashSet<FarmCategories> selectListByChildId(Long ChildId) {
+
+        HashSet<FarmCategories> farmCategories = new HashSet<>();
+        FarmCategories farmCategory = this.getById(ChildId);
+
+        if (farmCategory.getParentId() != -1) {
+            farmCategories.add(farmCategory);
+            farmCategories.addAll(selectListByChildId(farmCategory.getParentId()));
+        } else {
+            farmCategories.add(farmCategory);
+            return farmCategories;
+        }
+
+        return farmCategories;
+    }
+
 
 }
 

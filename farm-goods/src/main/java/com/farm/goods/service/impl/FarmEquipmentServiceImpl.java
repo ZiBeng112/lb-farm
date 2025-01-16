@@ -40,12 +40,30 @@ public class FarmEquipmentServiceImpl extends ServiceImpl<FarmEquipmentMapper, F
     public List getList(IPage iPage, EquipmentListDto equipmentListDto) {
 
         // 返回本店的所有商品,设备,但是分页
+        // 查询条件,根据名称,分类,状态,店铺id
+        String name = equipmentListDto.getName();
+        Integer status = equipmentListDto.getStatus();
+        Long ownerId = equipmentListDto.getOwnerId();
+        List<Long> categories = null;
+        // category 有点特殊,他需要获得他所有的子分类
+        Long categoryId = equipmentListDto.getCategoryId();
+        if (categoryId != null) {
+            // 获得所有子分类
+
+            List<FarmCategories> farmCategories = farmCategoriesService.selectCategoryListById(categoryId);
+            categories = farmCategories.stream().map(farmCategory -> farmCategory.getId()).collect(Collectors.toList());
+        }
+
+
         LambdaQueryWrapper<FarmEquipment> eq = Wrappers.lambdaQuery(FarmEquipment.class)
+                .eq(name!=null&&!name.isEmpty(),FarmEquipment::getName, equipmentListDto.getName())
+                .in(categories!=null&&categories.size()!=0,FarmEquipment::getCategoryId, categories)
+                .eq(status!=null,FarmEquipment::getStatus, equipmentListDto.getStatus())
                 .eq(FarmEquipment::getOwnerId, equipmentListDto.getOwnerId());
 
         List<FarmEquipment> list = this.list(iPage, eq);
 
-        // 补充其全部种类,从树结构开始
+        // VO属性的 Allcategory 补充其全部种类,从树结构开始
         ArrayList<EquipmentListVo> equipmentListVos = new ArrayList<>();
 
         list.forEach(

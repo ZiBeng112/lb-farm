@@ -3,6 +3,7 @@ package com.farm.web.controller.goods;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.farm.common.core.controller.BaseController;
 import com.farm.common.core.domain.AjaxResult;
+import com.farm.common.core.page.TableDataInfo;
 import com.farm.goods.domain.FarmEquipment;
 import com.farm.goods.domain.dto.CategoryListDto;
 import com.farm.goods.domain.dto.EquipmentListDto;
@@ -44,7 +45,9 @@ public class equipmentController extends BaseController {
 
         List list = farmEquipmentService.getList(iPage, equipmentListDto);
 
-        return AjaxResult.success(list);
+        TableDataInfo dataTable = this.getDataTable(list);
+
+        return AjaxResult.success(dataTable);
 
     }
 

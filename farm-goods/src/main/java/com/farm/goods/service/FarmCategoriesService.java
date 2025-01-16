@@ -19,4 +19,6 @@ public interface FarmCategoriesService extends IService<FarmCategories> {
     FarmCategories qureyCategory(Long id);
 
     String selectAllCategoryById(Long id);
+
+    List<FarmCategories> selectCategoryListById(Long id);
 }
