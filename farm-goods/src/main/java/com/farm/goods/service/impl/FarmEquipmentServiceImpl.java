@@ -49,19 +49,31 @@ public class FarmEquipmentServiceImpl extends ServiceImpl<FarmEquipmentMapper, F
         Long categoryId = equipmentListDto.getCategoryId();
         if (categoryId != null) {
             // 获得所有子分类
-
             List<FarmCategories> farmCategories = farmCategoriesService.selectCategoryListById(categoryId);
             categories = farmCategories.stream().map(farmCategory -> farmCategory.getId()).collect(Collectors.toList());
         }
 
 
         LambdaQueryWrapper<FarmEquipment> eq = Wrappers.lambdaQuery(FarmEquipment.class)
-                .eq(name!=null&&!name.isEmpty(),FarmEquipment::getName, equipmentListDto.getName())
-                .in(categories!=null&&categories.size()!=0,FarmEquipment::getCategoryId, categories)
-                .eq(status!=null,FarmEquipment::getStatus, equipmentListDto.getStatus())
-                .eq(FarmEquipment::getOwnerId, equipmentListDto.getOwnerId());
+                .eq(name != null && !name.isEmpty(), FarmEquipment::getName, equipmentListDto.getName())
+                .in(categories != null && categories.size() != 0, FarmEquipment::getCategoryId, categories)
+                .eq(status != null, FarmEquipment::getStatus, equipmentListDto.getStatus())
+                .eq(FarmEquipment::getOwnerId, equipmentListDto.getOwnerId())
+                .orderByDesc(FarmEquipment::getCreatedAt);
 
-        List<FarmEquipment> list = this.list(iPage, eq);
+        List<FarmEquipment> list = null;
+
+        if (iPage == null) {
+            if (equipmentListDto.getIds() != null && equipmentListDto.getIds().size() != 0) {
+                list = this.list(Wrappers.lambdaQuery(FarmEquipment.class).in(FarmEquipment::getId, equipmentListDto.getIds()));
+            } else {
+                list = this.list(eq);
+            }
+
+        } else {
+            list = this.list(iPage, eq);
+        }
+
 
         // VO属性的 Allcategory 补充其全部种类,从树结构开始
         ArrayList<EquipmentListVo> equipmentListVos = new ArrayList<>();
@@ -80,9 +92,9 @@ public class FarmEquipmentServiceImpl extends ServiceImpl<FarmEquipmentMapper, F
         );
 
 
-                    return equipmentListVos;
+        return equipmentListVos;
 
-                }
+    }
 
     @Override
     public List<CategoryTreeSelect> getCategoryTree(CategoryListDto categoryListDto) {

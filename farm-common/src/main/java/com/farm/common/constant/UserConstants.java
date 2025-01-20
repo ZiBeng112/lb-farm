@@ -78,4 +78,13 @@ public class UserConstants
      */
     public static final int PASSWORD_MIN_LENGTH = 5;
     public static final int PASSWORD_MAX_LENGTH = 20;
+
+    /**
+     * 用户来源
+     */
+    public static final String BY_MYSELF = "ByMyself";
+
+    public static final Long BUYER_DEPT = 202L;
+    public static final Long BUYER_ROLE = 100L;
+
 }

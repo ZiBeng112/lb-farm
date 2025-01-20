@@ -104,7 +104,7 @@ public class FarmCategoriesServiceImpl
 
         FarmCategories farmCategory = this.getById(id);
 
-        if (farmCategory.getParentId() != 0) {
+        if (farmCategory.getParentId() != -1) {
             sj.add(this.selectAllCategoryById(farmCategory.getParentId()));
             sj.add(farmCategory.getName());
         } else {

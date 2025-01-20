@@ -1,12 +1,18 @@
 package com.farm.web.controller.goods;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.farm.common.core.controller.BaseController;
 import com.farm.common.core.domain.AjaxResult;
+import com.farm.common.core.domain.entity.SysUser;
 import com.farm.common.core.page.TableDataInfo;
+import com.farm.common.utils.poi.ExcelUtil;
 import com.farm.goods.domain.FarmEquipment;
 import com.farm.goods.domain.dto.CategoryListDto;
+import com.farm.goods.domain.dto.EquipmentBatchDto;
 import com.farm.goods.domain.dto.EquipmentListDto;
+import com.farm.goods.domain.vo.EquipmentListVo;
 import com.farm.goods.service.FarmEquipmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +20,7 @@ import lombok.Data;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -68,32 +75,24 @@ public class equipmentController extends BaseController {
         );
     }
 
-    @ApiOperation("添加商品")
+    @ApiOperation("添加或修改商品")
     @PreAuthorize("@ss.hasPermi('admin:goods:list')")
-    @PostMapping("/add")
+    @PostMapping("/saveOrUpdate")
     public AjaxResult addEquipment(@RequestBody FarmEquipment farmEquipment) {
 
       farmEquipment.setOwnerId(this.getUserId());
-      farmEquipment.setCreatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+
+      if( farmEquipment.getId() != null){
+          farmEquipment.setCreatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+      }
       farmEquipment.setUpdatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
 
       return AjaxResult.success(
-                farmEquipmentService.save(farmEquipment)
+                farmEquipmentService.saveOrUpdate(farmEquipment)
         );
 
     }
 
-    @ApiOperation("编辑商品")
-    @PreAuthorize("@ss.hasPermi('admin:goods:list')")
-    @PutMapping("/edit")
-    public AjaxResult editEquipment(@RequestBody FarmEquipment farmEquipment) {
-        farmEquipment.setUpdatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-
-        return AjaxResult.success(
-                farmEquipmentService.updateById(farmEquipment)
-        );
-
-    }
 
     @ApiOperation("删除商品")
     @PreAuthorize("@ss.hasPermi('admin:goods:list')")
@@ -131,6 +130,48 @@ public class equipmentController extends BaseController {
         );
 
     }
+
+    // todo 导入 导出 批量删除 批量上下架
+
+    @ApiOperation("批量删除商品")
+    @PreAuthorize("@ss.hasPermi('admin:goods:list')")
+    @DeleteMapping("/deleteByIds")
+    public AjaxResult deleteByIds(@RequestBody EquipmentBatchDto data){
+        return AjaxResult.success(
+                farmEquipmentService.removeByIds(data.getIds())
+        );
+    }
+
+    @ApiOperation("批量上下架商品")
+    @PreAuthorize("@ss.hasPermi('admin:goods:list')")
+    @PutMapping("/updateStatusByIds")
+    public AjaxResult updateStatusByIds(@RequestBody EquipmentBatchDto data){
+
+        LambdaUpdateWrapper<FarmEquipment> set = Wrappers.lambdaUpdate(FarmEquipment.class)
+                .in(FarmEquipment::getId, data.getIds())
+                .set(FarmEquipment::getStatus, data.getStatus());
+        farmEquipmentService.update(set);
+
+        return AjaxResult.success();
+
+
+    }
+
+    @ApiOperation("导出商品")
+    @PreAuthorize("@ss.hasPermi('admin:goods:list')")
+    @PostMapping ("/export")
+    public void export(HttpServletResponse response, EquipmentListDto equipmentListDto) {
+
+        equipmentListDto.setOwnerId(this.getUserId());
+
+        List<EquipmentListVo> list = farmEquipmentService.getList(null, equipmentListDto);
+        ExcelUtil<EquipmentListVo> util = new ExcelUtil<EquipmentListVo>(EquipmentListVo.class);
+        util.exportExcel(response, list, "用户数据");
+
+    }
+
+
+
 
 
 }

@@ -204,6 +204,11 @@
                 <artifactId>farm-framework</artifactId>
                 <version>${farm.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.farm</groupId>
+                <artifactId>farm-buyer-framework</artifactId>
+                <version>${farm.version}</version>
+            </dependency>
 
             <!-- 系统模块-->
             <dependency>
@@ -250,6 +255,7 @@
         <module>farm-common</module>
         <module>farm-buyer</module>
         <module>farm-goods</module>
+        <module>farm-buyer-framework</module>
     </modules>
     <packaging>pom</packaging>
 
