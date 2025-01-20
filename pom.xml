@@ -232,6 +232,13 @@
             </dependency>
 
             <dependency>
+                <groupId>com.farm</groupId>
+                <artifactId>farm-myShop</artifactId>
+                <version>${farm.version}</version>
+            </dependency>
+
+
+            <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus</artifactId>
                 <version>${mybatis-plus}</version>
@@ -256,6 +263,7 @@
         <module>farm-buyer</module>
         <module>farm-goods</module>
         <module>farm-buyer-framework</module>
+        <module>farm-myShop</module>
     </modules>
     <packaging>pom</packaging>
 
