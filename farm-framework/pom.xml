@@ -68,7 +68,7 @@
 
         <dependency>
             <groupId>com.farm</groupId>
-            <artifactId>farm-myShop</artifactId>
+            <artifactId>farm-shop</artifactId>
         </dependency>
 
         <!-- 系统模块-->

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.farm.shop.mapper.FarmMerchantMapper">
+
+    <resultMap id="BaseResultMap" type="com.farm.shop.domain.FarmMerchant">
+            <id property="merchantId" column="merchant_id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="merchantName" column="merchant_name" jdbcType="VARCHAR"/>
+            <result property="contactPerson" column="contact_person" jdbcType="VARCHAR"/>
+            <result property="contactPhone" column="contact_phone" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="showImage" column="show_image" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        merchant_id,user_id,merchant_name,
+        contact_person,contact_phone,email,
+        address,show_image,description,
+        status,created_at,updated_at
+    </sql>
+    <select id="selectInfoById" resultType="com.farm.shop.domain.Dto.MyFarmMerchantDto">
+
+        SELECT
+            fm.merchant_id,
+            fm.merchant_name,
+            fm.contact_person,
+            fm.contact_phone,
+            fm.email,
+            fm.address,
+            fm.show_image,
+            fm.description,
+            fm.status,
+            fm.created_at,
+            fm.updated_at,
+            fm.province,
+            fm.city,
+            fm.district,
+            province.district AS province_name,
+            city.district AS city_name,
+            county.district AS district_name
+        FROM
+            farm_merchant fm
+                LEFT JOIN
+            rc_district province ON fm.province = province.district_id
+                LEFT JOIN
+            rc_district city ON fm.city = city.district_id
+                LEFT JOIN
+            rc_district county ON fm.district = county.district_id
+         WHERE fm.user_id = #{userId}
+
+
+
+    </select>
+</mapper>

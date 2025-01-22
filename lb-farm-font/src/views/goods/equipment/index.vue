@@ -176,6 +176,7 @@
                   :on-preview="handlePreview"
                   :on-remove="handleRemove"
                   :on-success="handleSuccess"
+                  :on-exceed="handleExceed"
                   :limit="1"
               >
                 <template #default>
@@ -184,8 +185,6 @@
                   </el-icon>
                 </template>
               </el-upload>
-
-
             </el-form-item>
 
           </el-col>
@@ -285,6 +284,11 @@ const handleSuccess = (response, file, fileListNew) => {
 
   console.log(fileList.value)
 };
+
+const handleExceed = () => {
+  proxy.$modal.msgError('最多只能上传一张图片');
+
+}
 
 // 删除图片
 const handleRemove = () => {

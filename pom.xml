@@ -233,7 +233,7 @@
 
             <dependency>
                 <groupId>com.farm</groupId>
-                <artifactId>farm-myShop</artifactId>
+                <artifactId>farm-shop</artifactId>
                 <version>${farm.version}</version>
             </dependency>
 
@@ -263,7 +263,7 @@
         <module>farm-buyer</module>
         <module>farm-goods</module>
         <module>farm-buyer-framework</module>
-        <module>farm-myShop</module>
+        <module>farm-shop</module>
     </modules>
     <packaging>pom</packaging>
 

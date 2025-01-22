@@ -1,12 +1,9 @@
 import request from '@/utils/request'
 
-export function listByParentId(data) {
+export function listByParentId(params) {
     return request({
-        url: '/register',
-        headers: {
-            isToken: false
-        },
-        method: 'post',
-        data: data
+        url: '/common/province/list',
+        method: 'get',
+        params: params
     })
 }

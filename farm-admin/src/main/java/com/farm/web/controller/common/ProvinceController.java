@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Api(tags = "省市区管理")
 @RestController
 @RequestMapping("/common/province")
@@ -23,20 +25,19 @@ public class ProvinceController extends BaseController {
     private final RcDistrictService rcDistrictService;
 
 
-
     // TODO: 通过父获得全部子
     // todo: 通过id获取详细
 
     @GetMapping("/list")
     @ApiOperation(value = "获取省市区列表")
-    public AjaxResult getList(Long id){
+    public AjaxResult getList(Long id) {
 
-        return AjaxResult.success(rcDistrictService.list(
+        List<RcDistrict> list = rcDistrictService.list(
                 Wrappers.lambdaQuery(RcDistrict.class)
-                        .eq(RcDistrict::getPid, id)
-        ));
-    }
+                        .eq(RcDistrict::getPid, id));
 
+        return AjaxResult.success(list);
+    }
 
 
 }
